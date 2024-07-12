@@ -27,5 +27,7 @@ namespace IntroductionToEFCoreENG
         public DbSet<Actor> Actors { get; set; }
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Comment> Comments { get; set; }
+        public DbSet<MovieActor> MoviesActors { get; set; }
+
     }
 }
