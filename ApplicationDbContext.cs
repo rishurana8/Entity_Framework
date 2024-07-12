@@ -1,6 +1,8 @@
 ﻿using IntroductionToEFCoreENG.Entites;
+using IntroductionToEFCoreENG.Entites.Configurations;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace IntroductionToEFCoreENG
 {
@@ -12,20 +14,7 @@ namespace IntroductionToEFCoreENG
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<Genre>().HasKey(g => g.Identifier);
-            //modelBuilder.Entity<Genre>().Property(g => g.Name).HasMaxLength(150);
-
-            //modelBuilder.Entity<Actor>().Property(a => a.Name).HasMaxLength(150);
-            modelBuilder.Entity<Actor>().Property(a => a.DateOfBirth).HasColumnType("date");
-
-            // example: 123.45 , 5 digits and 2 are decimals
-            modelBuilder.Entity<Actor>().Property(a => a.Fortune).HasPrecision(18, 2);
-
-            //modelBuilder.Entity<Movie>().Property(m => m.Title).HasMaxLength(150);
-            modelBuilder.Entity<Movie>().Property(a => a.ReleaseDate).HasColumnType("date");
-
-            modelBuilder.Entity<Comment>().Property(p => p.Content).HasMaxLength(500);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)

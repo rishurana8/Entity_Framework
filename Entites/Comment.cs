@@ -8,6 +8,10 @@
 
         public bool Recommend {  get; set; }
 
+        public int MovieId {  get; set; }
+
+        // foregin key jo movie se refernce legi 
+        public Movie Movie { get; set; }
 
     }
 }

@@ -10,6 +10,8 @@
 
         public DateTime ReleaseDate{ get; set; }
 
-
+        // As movie ke andar kafi saare comments honge so humne hashset nahi rkhna 
+        // so here we have added one to many relationship between movie and comments
+        public HashSet<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }
