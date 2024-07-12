@@ -9,6 +9,6 @@ namespace IntroductionToEFCoreENG.Entites
         public int Identifier { get; set; }
 
         [StringLength(maximumLength:150)]
-        public string Name { get; set; }
+        public string Name { get; set; }=null!;
     }
 }
