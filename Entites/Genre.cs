@@ -12,6 +12,6 @@ namespace IntroductionToEFCoreENG.Entites
         public string Name { get; set; }=null!;
 
         public HashSet<Movie> Movies { get; set; } = new HashSet<Movie>();
-
+        public int Id { get; internal set; }
     }
 }

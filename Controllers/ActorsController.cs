@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using IntroductionToEFCoreENG.Controllers.DTOs;
+using IntroductionToEFCoreENG.Entites;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IntroductionToEFCoreENG.Controllers
 {
+    [ApiController]
+    [Route("api/actors")]
     public class ActorsController: ControllerBase
     {
         private readonly IMapper mapper;
@@ -14,9 +18,12 @@ namespace IntroductionToEFCoreENG.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post()
+        public async Task<ActionResult> Post(ActorCreationDTO actorCreationDTO)
         {
-
+            var actor = mapper.Map<Actor>(actorCreationDTO);
+            context.Add(actor);
+            await context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

@@ -16,7 +16,7 @@
 
         public HashSet<Genre> Genres { get; set; } = new HashSet<Genre>();
 
-        public HashSet<MovieActor> MoviesActors { get; set; }
+        public List<MovieActor> MoviesActors { get; set; } = new List<MovieActor> { };
 
     }
 }
