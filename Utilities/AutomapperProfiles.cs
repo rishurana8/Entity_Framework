@@ -1,15 +1,17 @@
 ﻿using AutoMapper;
-using IntroductionToEFCoreENG.Controllers.DTOs;
-using IntroductionToEFCoreENG.Entites;
+using IntroductionToEFCoreENG.DTOs;
+using IntroductionToEFCoreENG.Entities;
 
 namespace IntroductionToEFCoreENG.Utilities
 {
-    public class AutomapperProfiles: Profile
+    public class AutoMapperProfiles : Profile
     {
-        public AutomapperProfiles() {
+        public AutoMapperProfiles()
+        {
             CreateMap<GenreCreationDTO, Genre>();
             CreateMap<ActorCreationDTO, Actor>();
             CreateMap<CommentCreationDTO, Comment>();
+
             CreateMap<MovieCreationDTO, Movie>()
                 .ForMember(ent => ent.Genres,
                 dto => dto.MapFrom(field => field.Genres.Select(id => new Genre() { Id = id })));

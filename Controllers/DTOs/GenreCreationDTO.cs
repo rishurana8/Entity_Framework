@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IntroductionToEFCoreENG.Controllers.DTOs
+namespace IntroductionToEFCoreENG.DTOs
 {
     public class GenreCreationDTO
     {
-        [StringLength(maximumLength:150)]
+        [StringLength(maximumLength: 150)]
         public string Name { get; set; } = null!;
-
     }
 }

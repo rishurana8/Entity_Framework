@@ -1,43 +1,108 @@
 ﻿using AutoMapper;
-using IntroductionToEFCoreENG.Controllers.DTOs;
-using IntroductionToEFCoreENG.Entites;
+using IntroductionToEFCoreENG.DTOs;
+using IntroductionToEFCoreENG.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace IntroductionToEFCoreENG.Controllers
 {
     [ApiController]
     [Route("api/genres")]
-    public class GenresController: ControllerBase
+    public class GenresController : ControllerBase
     {
-        // we will require a instance of applicationDBContext Class because it is through this class we will be able to do CRUD 
-        // we will use dependency injection to access instance of application DB context 
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+
         public GenresController(ApplicationDbContext context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
 
-        [HttpPost]
-
-        public async Task<ActionResult> Post(Genre genreCreationDTO)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Genre>>> Get()
         {
+            return await context.Genres.OrderByDescending(x => x.Name).ToListAsync();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Post(GenreCreationDTO genreCreationDTO)
+        {
+
+            var genreExistsWithThatName =
+                await context.Genres.AnyAsync(g => g.Name == genreCreationDTO.Name);
+
+            if (genreExistsWithThatName)
+            {
+                return BadRequest("There's already a genre with the name: " + genreCreationDTO.Name);
+            }
+
             var genre = mapper.Map<Genre>(genreCreationDTO);
             context.Add(genre);
             await context.SaveChangesAsync();
             return Ok();
         }
 
-
         [HttpPost("several")]
-
         public async Task<ActionResult> Post(GenreCreationDTO[] genreCreationDTO)
         {
             var genres = mapper.Map<Genre[]>(genreCreationDTO);
             context.AddRange(genres);
             await context.SaveChangesAsync();
             return Ok();
+        }
+
+        [HttpPut("{id:int}/name2")]
+        public async Task<ActionResult> Put(int id)
+        {
+            var genre = await context.Genres.FirstOrDefaultAsync(g => g.Id == id);
+
+            if (genre is null)
+            {
+                return NotFound();
+            }
+
+            genre.Name = genre.Name + "2";
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(int id, GenreCreationDTO genreCreationDTO)
+        {
+            var genre = mapper.Map<Genre>(genreCreationDTO);
+            genre.Id = id;
+            context.Update(genre);
+            await context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id:int}/modern")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var removedRows = await context.Genres.Where(g => g.Id == id).ExecuteDeleteAsync();
+
+            if (removedRows == 0)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id:int}/oldway")]
+        public async Task<ActionResult> DeleteOldWay(int id)
+        {
+            var genre = await context.Genres.FirstOrDefaultAsync(g => g.Id == id);
+
+            if (genre is null)
+            {
+                return NotFound();
+            }
+
+            context.Remove(genre);
+            await context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

@@ -4,6 +4,7 @@ using IntroductionToEFCoreENG;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IntroductionToEFCoreENG.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240715141247_GenreData")]
+    partial class GenreData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,37 +27,20 @@ namespace IntroductionToEFCoreENG.Migrations
 
             modelBuilder.Entity("GenreMovie", b =>
                 {
-                    b.Property<int>("GenresId")
+                    b.Property<int>("GenresIdentifier")
                         .HasColumnType("int");
 
                     b.Property<int>("MoviesId")
                         .HasColumnType("int");
 
-                    b.HasKey("GenresId", "MoviesId");
+                    b.HasKey("GenresIdentifier", "MoviesId");
 
                     b.HasIndex("MoviesId");
 
                     b.ToTable("GenreMovie");
-
-                    b.HasData(
-                        new
-                        {
-                            GenresId = 5,
-                            MoviesId = 2
-                        },
-                        new
-                        {
-                            GenresId = 5,
-                            MoviesId = 3
-                        },
-                        new
-                        {
-                            GenresId = 6,
-                            MoviesId = 4
-                        });
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Actor", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Actor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,25 +63,9 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            DateOfBirth = new DateTime(1948, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Fortune = 15000m,
-                            Name = "Samuel L. Jackson"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DateOfBirth = new DateTime(1965, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Fortune = 18000m,
-                            Name = "Robert Downey Jr."
-                        });
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Comment", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Comment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,6 +74,7 @@ namespace IntroductionToEFCoreENG.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -118,65 +89,44 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("Comments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            Content = "Very good!!!",
-                            MovieId = 2,
-                            Recommend = true
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Content = "I love it!",
-                            MovieId = 2,
-                            Recommend = true
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Content = "They shouldn't have done that",
-                            MovieId = 3,
-                            Recommend = false
-                        });
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Genre", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Genre", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Identifier")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Identifier"));
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
+                    b.HasKey("Identifier");
 
                     b.ToTable("Genres");
 
                     b.HasData(
                         new
                         {
-                            Id = 5,
+                            Identifier = 5,
+                            Id = 0,
                             Name = "Science Fiction"
                         },
                         new
                         {
-                            Id = 6,
+                            Identifier = 6,
+                            Id = 0,
                             Name = "Animation"
                         });
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Movie", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,32 +148,9 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            InTheaters = false,
-                            ReleaseDate = new DateTime(2019, 4, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Avengers Endgame"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            InTheaters = false,
-                            ReleaseDate = new DateTime(2021, 12, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Spider-Man: No Way Home"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            InTheaters = false,
-                            ReleaseDate = new DateTime(2022, 10, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Title = "Spider-Man: Across the Spider-Verse (Part One)"
-                        });
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.MovieActor", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.MovieActor", b =>
                 {
                     b.Property<int>("ActorId")
                         .HasColumnType("int");
@@ -244,49 +171,26 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.HasIndex("MovieId");
 
                     b.ToTable("MoviesActors");
-
-                    b.HasData(
-                        new
-                        {
-                            ActorId = 2,
-                            MovieId = 3,
-                            Character = "Nick Fury",
-                            Order = 1
-                        },
-                        new
-                        {
-                            ActorId = 2,
-                            MovieId = 2,
-                            Character = "Nick Fury",
-                            Order = 2
-                        },
-                        new
-                        {
-                            ActorId = 3,
-                            MovieId = 2,
-                            Character = "Iron Man",
-                            Order = 1
-                        });
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
                 {
-                    b.HasOne("IntroductionToEFCoreENG.Entities.Genre", null)
+                    b.HasOne("IntroductionToEFCoreENG.Entites.Genre", null)
                         .WithMany()
-                        .HasForeignKey("GenresId")
+                        .HasForeignKey("GenresIdentifier")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IntroductionToEFCoreENG.Entities.Movie", null)
+                    b.HasOne("IntroductionToEFCoreENG.Entites.Movie", null)
                         .WithMany()
                         .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Comment", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Comment", b =>
                 {
-                    b.HasOne("IntroductionToEFCoreENG.Entities.Movie", "Movie")
+                    b.HasOne("IntroductionToEFCoreENG.Entites.Movie", "Movie")
                         .WithMany("Comments")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -295,15 +199,15 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.MovieActor", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.MovieActor", b =>
                 {
-                    b.HasOne("IntroductionToEFCoreENG.Entities.Actor", "Actor")
-                        .WithMany("MoviesActors")
+                    b.HasOne("IntroductionToEFCoreENG.Entites.Actor", "Actor")
+                        .WithMany()
                         .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IntroductionToEFCoreENG.Entities.Movie", "Movie")
+                    b.HasOne("IntroductionToEFCoreENG.Entites.Movie", "Movie")
                         .WithMany("MoviesActors")
                         .HasForeignKey("MovieId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -314,12 +218,7 @@ namespace IntroductionToEFCoreENG.Migrations
                     b.Navigation("Movie");
                 });
 
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Actor", b =>
-                {
-                    b.Navigation("MoviesActors");
-                });
-
-            modelBuilder.Entity("IntroductionToEFCoreENG.Entities.Movie", b =>
+            modelBuilder.Entity("IntroductionToEFCoreENG.Entites.Movie", b =>
                 {
                     b.Navigation("Comments");
 

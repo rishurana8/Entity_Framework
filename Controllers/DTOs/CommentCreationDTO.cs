@@ -1,9 +1,8 @@
-﻿namespace IntroductionToEFCoreENG.Controllers.DTOs
+﻿namespace IntroductionToEFCoreENG.DTOs
 {
     public class CommentCreationDTO
     {
-        public string ? Content { get; set; }
-        public bool Recommend {  get; set; }
-
+        public string? Content { get; set; }
+        public bool Recommend { get; set; }
     }
 }

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Reflection.Emit;
 
-namespace IntroductionToEFCoreENG.Entites.Configurations
+namespace IntroductionToEFCoreENG.Entities.Configurations
 {
-    public class Commentconfig : IEntityTypeConfiguration<Comment>
+    public class CommentConfig : IEntityTypeConfiguration<Comment>
     {
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
