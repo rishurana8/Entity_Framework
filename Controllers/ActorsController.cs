@@ -39,7 +39,7 @@ namespace IntroductionToEFCoreENG.Controllers
             return await context.Actors
                 .Where(x => x.Name.Contains(name))
                 .OrderBy(x => x.Name)
-                    .ThenByDescending(x => x.DateOfBirth)
+                .ThenByDescending(x => x.DateOfBirth)
                 .ToListAsync();
         }
 
@@ -59,17 +59,18 @@ namespace IntroductionToEFCoreENG.Controllers
                 .ToListAsync();
         }
 
+        // api for finding a particular actor is present or not 
         [HttpGet("{id:int}")]
         public async Task<ActionResult<Actor>> Get(int id)
         {
-            var actor = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+            var trial = await context.Actors.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (actor is null)
+            if (trial is null)
             {
                 return NotFound();
             }
 
-            return actor;
+            return trial;
         }
 
         [HttpPost]
